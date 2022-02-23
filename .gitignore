@@ -128,3 +128,15 @@ dmypy.json
 # Pyre type checker
 .pyre/
 Paths.txt
+Vorbereitete XMLs/Text_de.xml
+Vorbereitete XMLs/Text_Missing_es.xml
+Vorbereitete XMLs/Text_Missing_fr.xml
+.gitignore
+.gitignore
+.gitignore
+.gitignore
+Paths.txt
+Vorbereitete XMLs/Text_Missing_it.xml
+.gitignore
+Vorbereitete XMLs/Text_Missing_zh.xml
+Vorbereitete XMLs/Text_Missing_ru.xml

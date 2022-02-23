@@ -1,12 +1,13 @@
 from os import remove
+from sqlite3 import connect
 from xml.dom.minidom import Text
 
 
-class CSVExtractor:
+class xmlExtractor:
     def __init__(self, path, target_list):
         import xml.dom.minidom as minidom
-        csv_file = minidom.parse(path)
-        TextValue = csv_file.getElementsByTagName('TextValue')
+        xml_file = minidom.parse(path)
+        TextValue = xml_file.getElementsByTagName('TextValue')
         Old_ID_List = []
 
         for elem in TextValue:
@@ -15,11 +16,11 @@ class CSVExtractor:
 
         target_list.append(Old_ID_List)
 
-class CSVExtractorFull:
+class xmlExtractorFull:
     def __init__(self, path, target_list_IDs, target_list_Text):
         import xml.dom.minidom as minidom
-        csv_file = minidom.parse(path)
-        TextValue = csv_file.getElementsByTagName('TextValue')
+        xml_file = minidom.parse(path)
+        TextValue = xml_file.getElementsByTagName('TextValue')
         Old_ID_List = []
         Old_Text_List = []
 
@@ -37,7 +38,7 @@ class CSVExtractorFull:
         target_list_IDs.append(Old_ID_List)
         target_list_Text.append(Old_Text_List)
         
-class CSVGenerator:
+class xmlGenerator:
     def __init__(self, root, current_language, attributeList, commonList, textList, save_path_file):
         xml = root.createElement('Texts') 
         xml.setAttribute('TextLanguage', current_language)
@@ -69,10 +70,16 @@ class CSVGenerator:
 
         content = []
         with open(save_path_file, "r", encoding='utf-8') as file:
-            content = file.readlines()         
-            content = "".join(content)
+            content_test = file.readlines()
         
         with open(save_path_file, "w", encoding='utf-8') as f:
-            f.write(content.replace('&amp;#xA;','&#xA;').replace('&amp;#xD;','&#xD;').replace('&amp;#x9;','&#x9;'))
+            for line in content_test:
+                contetnForAll = line.replace('&amp;#xA;','&#xA;').replace('&amp;#xD;','&#xD;').replace('&amp;#x9;','&#x9;')
+                contetnForTextOnly = contetnForAll[int(contetnForAll.find(">") + len(">")):int(contetnForAll.find("</TextValue>"))].replace("&quot;",'"')
+                if "TextID" in str(contetnForAll):
+                    content = "".join(contetnForAll[:int(contetnForAll.find(">"))+1] + contetnForTextOnly + "</TextValue>\n")
+                else:
+                    content = "".join(contetnForAll)
+                f.write(content)
 
         
